@@ -1,3 +1,4 @@
+import 'package:fe_trip/FadeAnimation.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
+        fontFamily: 'Nunito'
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -32,9 +34,12 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
 
-  PageController? _pageController;
+  late PageController _pageController;
+
+  int totalPage = 3;
+
 
   void _onScroll(){
     // print('sss');
@@ -49,6 +54,12 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(
@@ -58,15 +69,36 @@ class _MyHomePageState extends State<MyHomePage> {
       body: PageView(
         controller: _pageController,
         children: [
-          makePage(image: 'assets/images/one.jpg'),
-          makePage(image: 'assets/images/three.jpg'),
-          makePage(image: 'assets/images/two.jpg'),
+          makePage(
+            page: 1,
+            image: 'assets/images/one.jpg',
+            title: 'Sạc Dự Phòng SamSung',
+            description: 'Với thiết kế tinh tế nhỏ gọn thì sạc dự phòng của SamSung là một lựa chọn hoàn hảo'
+                ' để gắn bó với bạn, hơn hết với sự kĩ lưỡng trong khâu sản suất và nghiên cứu thì sản phẩm của '
+                'chúng tôi cực kì an toàn cho bạn.',
+          ),
+          makePage(
+            page: 2,
+            image: 'assets/images/three.jpg',
+            title: 'Sạc Dự Phòng SamSung',
+            description: 'Với thiết kế tinh tế nhỏ gọn thì sạc dự phòng của SamSung là một lựa chọn hoàn hảo'
+                ' để gắn bó với bạn, hơn hết với sự kĩ lưỡng trong khâu sản suất và nghiên cứu thì sản phẩm của '
+                'chúng tôi cực kì an toàn cho bạn.',
+          ),
+          makePage(
+            page: 3,
+            image: 'assets/images/two.jpg',
+            title: 'Sạc Dự Phòng SamSung',
+            description: 'Với thiết kế tinh tế nhỏ gọn thì sạc dự phòng của SamSung là một lựa chọn hoàn hảo'
+                ' để gắn bó với bạn, hơn hết với sự kĩ lưỡng trong khâu sản suất và nghiên cứu thì sản phẩm của '
+                'chúng tôi cực kì an toàn cho bạn.',
+          ),
         ],
       ),
     );
   }
 
-  Widget makePage({image}){
+  Widget makePage({image, title, description, page}){
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(
@@ -98,8 +130,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 crossAxisAlignment: CrossAxisAlignment.baseline,
                 textBaseline: TextBaseline.alphabetic,
                 children: [
-                  Text('1', style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),),
-                  Text('/3', style: TextStyle(color: Colors.white, fontSize: 15),)
+                  Text(page.toString(), style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.bold),),
+                  Text('/'+ totalPage.toString(), style: TextStyle(color: Colors.white, fontSize: 15),)
                 ],
               ),
               Expanded(
@@ -107,7 +139,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('USA', style: TextStyle(color: Colors.white, fontSize: 40, fontWeight: FontWeight.bold),),
+                    FadeAnimation(2,
+                    Text(title, style: TextStyle(color: Colors.white, fontSize: 50, fontWeight: FontWeight.bold),)
+                    ),
                     SizedBox(
                       height: 20,
                     ),
@@ -133,9 +167,20 @@ class _MyHomePageState extends State<MyHomePage> {
                           margin: EdgeInsets.only(right: 3),
                           child: Icon(Icons.star, color: Colors.grey,size: 15,),
                         ),
+                        Text('4.0', style: TextStyle(color: Colors.white70),),
+                        Text('(2300)', style: TextStyle(color: Colors.white38, fontSize: 12),)
                       ],
                     ),
-
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 50),
+                      child: Text(description, style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 15, height: 1.9),),
+                    ),
+                    SizedBox(height: 10,),
+                    Text('READ MORE', style: TextStyle(color: Colors.white),),
+                    SizedBox(height: 30,),
                   ],
                 ),
               )
